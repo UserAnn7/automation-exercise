@@ -6,7 +6,7 @@ authors = ["103679685+UserAnn7@users.noreply.github.com"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.13"
+python = ">=3.11"
 playwright = "^1.44.0"
 pytest = "^8.2.0"
 pytest-playwright = "^0.4.4"
