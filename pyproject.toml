@@ -2,7 +2,7 @@
 name = "automation-exercise"
 version = "0.1.0"
 description = ""
-authors = ["103679685+UserAnn7@users.noreply.github.com"]
+authors = ["UserAnn7 103679685+UserAnn7@users.noreply.github.com"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
