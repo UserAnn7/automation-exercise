@@ -20,6 +20,7 @@ echo "📦 Installing Python dependencies with Poetry..."
 poetry install --no-root
 
 # STEP 3: Activating env
+echo "Activating env"
 poetry env activate
 
 # STEP 4: Install Playwright browsers
@@ -27,6 +28,7 @@ echo "🌐 Installing Playwright browsers..."
 poetry run playwright install
 
 # STEP 5: Installing Allure
+echo "📦 Installing Allure..."
 brew install allure
 
 echo "✅ Deployment complete!"
