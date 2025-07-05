@@ -1,6 +1,7 @@
 # conftest.py
 import pytest
 import os
+import allure
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -37,30 +38,21 @@ def capture_artifacts(page, request):
         f.write(f"Outcome: {result}\n")
         f.write(f"URL: {page.url}\n")
 
-    print(f"Test: {test_name}, result: {result}, screenshot: {screenshot_path}, {request.config.pluginmanager}")
+    # Attach screenshot to Allure
+    with open(screenshot_path, "rb") as image_file:
+        allure.attach(image_file.read(), name=f"{test_name}_screenshot", attachment_type=allure.attachment_type.PNG)
+
+    # Attach log to Allure
+    with open(log_path, "r") as log_file:
+        allure.attach(log_file.read(), name=f"{test_name}_log", attachment_type=allure.attachment_type.TEXT)
 
     if request.config.pluginmanager.hasplugin("html"):
         from pytest_html import extras
         extra = getattr(request.node, "extra", [])
         extra.append(extras.image(screenshot_path))
-        extra.append(extras.url(log_path, name="Download log file"))
-        extra.append(extras.text(page.url, name="Test log"))
+        extra.append(extras.url(log_path, name="Test Log"))
         request.node.extra = extra
 
 def pytest_configure(config):
     if hasattr(config, "_metadata"):
         config._metadata['Project'] = 'automation-exercise'
-
-# Optional: Show extras inline in the results table
-def pytest_html_results_table_row(report, cells):
-    if hasattr(report, 'extra'):
-        cells.append(report.extra)
-
-# Add extras to the result detail panel
-# def pytest_html_results_table_html(report, data):
-#     extra = getattr(report, 'extra', [])
-#     if extra:
-#         html = ''
-#         for e in extra:
-#             html += f'<div>{str(e)}</div>'
-#         data.append(html)
