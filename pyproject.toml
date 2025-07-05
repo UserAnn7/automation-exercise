@@ -1,0 +1,20 @@
+[project]
+name = "automation-exercise"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "UserAnn7",email = "103679685+UserAnn7@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+playwright = "^1.44.0"
+pytest = "^8.2.0"
+pytest-playwright = "^0.4.4"
+pytest-html = "^4.1.1"
+allure-pytest = "^2.13.2"
