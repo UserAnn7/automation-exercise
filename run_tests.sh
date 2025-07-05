@@ -2,6 +2,9 @@
 #!/bin/bash
 set -e
 
+echo "Making run_tests executable"
+chmod +x run_tests.sh
+
 echo "Cleaning old reports..."
 rm -rf allure-results allure-report screenshots report.html
 
