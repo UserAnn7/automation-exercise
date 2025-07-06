@@ -3,6 +3,7 @@ import os
 import allure
 from pytest_html import extras
 import base64
+from datetime import datetime
 
 # Create screenshots directory once per test session
 @pytest.fixture(scope="session", autouse=True)
@@ -18,7 +19,9 @@ def pytest_runtest_makereport(item, call):
     if rep.when == "call":
         page = item.funcargs.get("page", None)
         if page:
-            screenshot_name = f"{item.name}_{rep.outcome.upper()}.png"
+            # Add timestamp to screenshot name
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            screenshot_name = f"{item.name}_{rep.outcome.upper()}_{timestamp}.png"
             screenshot_path = os.path.join("screenshots", screenshot_name)
             allure.attach(page.screenshot(path=screenshot_path), name=screenshot_name, attachment_type=allure.attachment_type.PNG)
             # Embed the image directly in the report
@@ -29,7 +32,13 @@ def pytest_runtest_makereport(item, call):
             else:
                 rep.extras = [extra]
 
+# Function to convert an image file to a base64-encoded string
 def embed_image_base64(image_path):
-    """Convert an image file to a base64-encoded string."""
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode('utf-8')
+    try:
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode('utf-8')
+    except FileNotFoundError:
+        return ""  # Return an empty string if the file is not found
+    except Exception as e:
+        print(f"Error encoding image to base64: {e}")
+        return ""

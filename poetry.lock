@@ -33,6 +33,18 @@ attrs = ">=16.0.0"
 pluggy = ">=0.4.0"
 
 [[package]]
+name = "astor"
+version = "0.8.1"
+description = "Read/rewrite/write Python ASTs"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+groups = ["main"]
+files = [
+    {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
+    {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
+]
+
+[[package]]
 name = "attrs"
 version = "25.3.0"
 description = "Classes Without Boilerplate"
@@ -469,6 +481,22 @@ pygments = ">=2.7.2"
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-ast-transformer"
+version = "1.0.3"
+description = ""
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "pytest-ast-transformer-1.0.3.tar.gz", hash = "sha256:346f5d6a2500449099c68c3f35ea7965525d3d52012089ddda565babb99246a8"},
+    {file = "pytest_ast_transformer-1.0.3-py2.py3-none-any.whl", hash = "sha256:526d8a24b148f303ac2eae85308141fe85a13077afdc9ecbfeec7b74e91f4072"},
+]
+
+[package.dependencies]
+astor = "*"
+pytest = "*"
+
+[[package]]
 name = "pytest-base-url"
 version = "2.1.0"
 description = "pytest plugin for URL based testing"
@@ -545,6 +573,24 @@ pytest-base-url = ">=1.0.0,<3.0.0"
 python-slugify = ">=6.0.0,<9.0.0"
 
 [[package]]
+name = "pytest-soft-assertions"
+version = "0.1.2"
+description = ""
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "pytest-soft-assertions-0.1.2.tar.gz", hash = "sha256:061545adf003d0bdb8d05ee16dbc580b56583b5ad224d93a4096b201464de330"},
+    {file = "pytest_soft_assertions-0.1.2-py2.py3-none-any.whl", hash = "sha256:c2e858cebbf69d88196926e3b2e37711642adaad84cecdd035e4b75ba0290252"},
+]
+
+[package.dependencies]
+astor = "*"
+pytest = "*"
+pytest-ast-transformer = ">=1.0.3"
+texttable = "*"
+
+[[package]]
 name = "python-slugify"
 version = "8.0.4"
 description = "A Python slugify application that also handles Unicode"
@@ -597,6 +643,18 @@ files = [
 ]
 
 [[package]]
+name = "texttable"
+version = "1.7.0"
+description = "module to create simple ASCII tables"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "texttable-1.7.0-py2.py3-none-any.whl", hash = "sha256:72227d592c82b3d7f672731ae73e4d1f88cd8e2ef5b075a7a7f01a23a3743917"},
+    {file = "texttable-1.7.0.tar.gz", hash = "sha256:2d2068fb55115807d3ac77a4ca68fa48803e84ebb0ee2340f858107a36522638"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.14.1"
 description = "Backported and Experimental Type Hints for Python 3.9+"
@@ -629,4 +687,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "76298cff04918a3b25c1ec297aed6bd61fe5069e66a347297c9cab37c0b4353f"
+content-hash = "b0f90b3950fcc07fd0084ef8392a9aaa4543914abb1691c4699f7ac0a1eef818"
