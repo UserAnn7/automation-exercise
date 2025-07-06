@@ -1,5 +1,5 @@
 import allure
-from allure_commons.types import AttachmentType
+# from allure_commons.types import AttachmentType
 
 
 def test_homepage_loads(page):
