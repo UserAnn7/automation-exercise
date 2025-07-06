@@ -26,7 +26,7 @@ def test_update_user_info():
     }
     with sync_playwright() as p:
         request_context = p.request.new_context()
-        url =  "https://automationexercise.com/api/updateAccount"
+        url = "https://automationexercise.com/api/updateAccount"
         response = request_context.put(url, multipart = user_data)
 
         logger.info(f"Calling API:PUT:{url}")
@@ -38,7 +38,6 @@ def test_update_user_info():
         assert response_body["message"] == "User updated!", f"Response message: {response_body['message']}"
 
 # Search product without search product parameter (API), negative
-
 def test_negative_search_without_product():
     with sync_playwright() as p:
         request_context = p.request.new_context()
