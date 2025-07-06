@@ -1,11 +1,14 @@
 # Update user information (API) test-case
 from playwright.sync_api import sync_playwright
+import logging
+
+logger = logging.getLogger(__name__)
 
 def test_update_user_info():
     user_data = {
         "name": "user1",
-        "email": "test@gmail.com",
-        "password": "Pass1234",
+        "email": "dggdgdgdggd@gmail.com",
+        "password": "2zdhL@6XtPMsjdv",
         "title": "Mrs",
         "birth_date": "04",
         "birth_month": "May",
@@ -23,11 +26,12 @@ def test_update_user_info():
     }
     with sync_playwright() as p:
         request_context = p.request.new_context()
-        response = request_context.put("https://automationexercise.com/api/updateAccount", data = user_data,
-                                       headers={ "Content-Type": "application/json" })
+        response = request_context.put("https://automationexercise.com/api/updateAccount", multipart = user_data)
+                                       #headers={ "Content-Type": "multipart/form-data" }
+
         print(f"Status code: {response.status}")
-        assert response.status == 200, f"Status code: {response.status}"
         response_body = response.json()
+        assert response.status == 200, f"Status code: {response.status}"
         assert response_body["responseCode"] == 200, f"Response code: {response_body['responseCode']}"
         assert response_body["message"] == "User updated!", f"Response message: {response_body['message']}"
 

@@ -4,6 +4,45 @@ import allure
 from pytest_html import extras
 import base64
 from datetime import datetime
+import logging
+from playwright.sync_api import sync_playwright
+
+# def pytest_runtest_setup(item):
+#     # Если тест не помечен как ui — skip фикстуры browser/page
+#     if "ui" not in item.keywords:
+#         # Тут ничего делать не нужно — фикстуры просто не будут использованы
+#         pass
+#
+# @pytest.fixture(scope="function")
+# def browser(request):
+#     if "ui" in request.keywords:
+#         with sync_playwright() as p:
+#             browser = p.chromium.launch(headless=False,
+#                                         args=[
+#                                             "--window-position=0,0",
+#                                             "--window-size=1680,1050"
+#                                         ]
+#                                         )
+#             yield browser
+#             browser.close()
+#     else:
+#         # Для не-ui тестов — фикстура не создаётся (yield None или skip)
+#         yield None
+#
+# @pytest.fixture(scope="function")
+# def page(browser, request):
+#     if "ui" in request.keywords and browser is not None:
+#         context = browser.new_context()
+#         page = context.new_page()
+#         page.set_viewport_size({"width": 1680, "height": 1050})
+#         yield page
+#         context.close()
+#     else:
+#         yield None
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 # Create screenshots directory once per test session
 @pytest.fixture(scope="session", autouse=True)
@@ -17,6 +56,29 @@ def pytest_runtest_makereport(item, call):
     setattr(item, "rep_" + rep.when, rep)
 
     if rep.when == "call":
+        # Capture logs
+        log_file = f"logs/{item.name}.log"
+        os.makedirs(os.path.dirname(log_file), exist_ok=True)
+        with open(log_file, "w") as f:
+            for handler in logger.handlers:
+                if isinstance(handler, logging.FileHandler):
+                    handler.stream = f
+                    break
+            else:
+                file_handler = logging.FileHandler(log_file)
+                logger.addHandler(file_handler)
+                file_handler.stream = f
+
+        # Add logs to the report
+        with open(log_file, "r") as f:
+            log_content = f.read()
+            # Add logs to HTML report
+            extra = extras.html(f'<pre>{log_content}</pre>')
+            if hasattr(rep, 'extras'):
+                rep.extras.append(extra)
+            else:
+                rep.extras = [extra]
+
         page = item.funcargs.get("page", None)
         if page:
             # Add timestamp to screenshot name
@@ -26,7 +88,7 @@ def pytest_runtest_makereport(item, call):
             allure.attach(page.screenshot(path=screenshot_path), name=screenshot_name, attachment_type=allure.attachment_type.PNG)
             # Embed the image directly in the report
             image_base64 = embed_image_base64(screenshot_path)
-            extra = extras.html(f'<img src="data:image/png;base64,{image_base64}" alt="{screenshot_name}"/>')
+            extra = extras.html(f'<img src="data:image/png;base64,{image_base64}" alt="{screenshot_name}" height="250px"/>')
             if hasattr(rep, 'extras'):
                 rep.extras.append(extra)
             else:
