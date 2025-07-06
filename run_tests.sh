@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Making run_tests executable"
-chmod +x run_tests.sh
-
 echo "Cleaning old reports..."
 rm -rf allure-results allure-report screenshots report.html
 
@@ -12,7 +9,8 @@ poetry run pytest -s --soft-asserts --html=report.html --self-contained-html --a
 #echo "Generating Allure report..."
 #allure generate allure-results -o allure-report --clean
 
+echo "Opening HTML report"
+open report.html
+
 echo "Opening Allure results"
 allure serve allure-results
-
-echo "Allure report available at: ./allure-report/index.html"

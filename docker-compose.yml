@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  automation-tests:
+    build: .
+    container_name: automation-tests
+    volumes:
+      - .:/app                    # Full project mounted (live code updates!)
+    working_dir: /app
+    command: sleep infinity       # Keeps the container running
