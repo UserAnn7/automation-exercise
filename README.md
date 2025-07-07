@@ -70,3 +70,15 @@ If you prefer a local installation instead of using Docker, run the following co
 ./run_tests.sh
 ./open_reports.sh
 ```
+If you choose to run tests locally (using a local Playwright installation), make sure to uncomment the following fixtures in your conftest.py file:
+
+```
+# Uncomment these fixtures for local browser testing
+@pytest.fixture(scope="function")
+def browser(request):
+    ...
+
+@pytest.fixture(scope="function")
+def page(browser, request):
+    ...
+```
