@@ -17,12 +17,16 @@ def test_place_order_register_before_checkout(page):
         consent_button = page.locator("p.fc-button-label:has-text('Consent')")
         expect(consent_button).to_be_visible()
         consent_button.click()
+        logger.info("'http://automationexercise.com' is opened")
+
     with allure.step("Verify that home page is visible successfully"):
         assert page.url == "https://automationexercise.com/"
         home_tab = page.locator("a:has-text('Home')")
         expect(home_tab).to_be_visible()
         color = home_tab.evaluate("el => getComputedStyle(el).color")
         assert color == "rgb(255, 165, 0)"
+        logger.info("Home page is visible")
+
     with allure.step("Create account"):
         account_creation = AccountCreation(page)
         account_creation.click_signup_login_button()
@@ -30,6 +34,7 @@ def test_place_order_register_before_checkout(page):
         account_creation.filling_in_account_registration_form_and_click_create_account()
         account_creation.verify_that_account_created_and_click_continue_button()
         account_creation.verify_loggeed_in_as_username()
+        logger.info("Account is created successfully")
 
     with allure.step("Add product to cart and proceed to checkout"):
         add_product = AddProductToCartAndProceedToCheckout(page)
@@ -37,6 +42,7 @@ def test_place_order_register_before_checkout(page):
         add_product.click_cart_button()
         add_product.verify_cart_page_displayed()
         add_product.click_proceed_to_checkout()
+        logger.info("Product added to cart")
 
     with allure.step("Place order"):
         place_order = PlaceOrder(page)
@@ -45,8 +51,10 @@ def test_place_order_register_before_checkout(page):
         place_order.enter_payment()
         place_order.click_pay_and_confirm()
         place_order.verify_success_message_for_placing_order()
+        logger.info("Order is placed successfully")
 
     with allure.step("Delete account"):
         delete_account = DeleteAccount(page)
         delete_account.click_delete_account()
         delete_account.verify_account_deleted()
+        logger.info("Account is deleted")
