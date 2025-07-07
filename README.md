@@ -1,6 +1,29 @@
 # Automation Exercise
 
-This guide provides instructions for setting up and running automated tests using Docker and Allure.
+This project contains automated tests for the following test cases from automationexercise.com:
+
+🔹 API Tests 
+
+1. Update user information
+(PUT request to update user account details)
+
+Test Case Reference → https://automationexercise.com/api_list#collapse13
+
+2. Search product without search product parameter (Negative test)
+(GET request without search_product parameter — validates error handling)
+
+Test Case Reference → https://automationexercise.com/api_list#collapse6
+
+🔹 UI Test
+
+Place Order: Register before Checkout
+(Full end-to-end user flow including registration, adding product to cart, placing an order, and deleting account)
+
+Test Case Reference → https://automationexercise.com/test_cases#collapse15
+
+# Setup and Test Execution Guide
+
+This guide provides instructions for setting up, running automated tests, generating reports using Docker and Allure.
 
 ## Prerequisites
 
