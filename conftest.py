@@ -7,38 +7,38 @@ from datetime import datetime
 import logging
 from playwright.sync_api import sync_playwright
 
-# def pytest_runtest_setup(item):
-#     # Если тест не помечен как ui — skip фикстуры browser/page
-#     if "ui" not in item.keywords:
-#         # Тут ничего делать не нужно — фикстуры просто не будут использованы
-#         pass
-#
-# @pytest.fixture(scope="function")
-# def browser(request):
-#     if "ui" in request.keywords:
-#         with sync_playwright() as p:
-#             browser = p.chromium.launch(headless=False,
-#                                         args=[
-#                                             "--window-position=0,0",
-#                                             "--window-size=1680,1050"
-#                                         ]
-#                                         )
-#             yield browser
-#             browser.close()
-#     else:
-#         # Для не-ui тестов — фикстура не создаётся (yield None или skip)
-#         yield None
-#
-# @pytest.fixture(scope="function")
-# def page(browser, request):
-#     if "ui" in request.keywords and browser is not None:
-#         context = browser.new_context()
-#         page = context.new_page()
-#         page.set_viewport_size({"width": 1680, "height": 1050})
-#         yield page
-#         context.close()
-#     else:
-#         yield None
+def pytest_runtest_setup(item):
+    # Если тест не помечен как ui — skip фикстуры browser/page
+    if "ui" not in item.keywords:
+        # Тут ничего делать не нужно — фикстуры просто не будут использованы
+        pass
+
+@pytest.fixture(scope="function")
+def browser(request):
+    if "ui" in request.keywords:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=False,
+                                        args=[
+                                            "--window-position=0,0",
+                                            "--window-size=1680,1050"
+                                        ]
+                                        )
+            yield browser
+            browser.close()
+    else:
+        # Для не-ui тестов — фикстура не создаётся (yield None или skip)
+        yield None
+
+@pytest.fixture(scope="function")
+def page(browser, request):
+    if "ui" in request.keywords and browser is not None:
+        context = browser.new_context()
+        page = context.new_page()
+        page.set_viewport_size({"width": 1680, "height": 1050})
+        yield page
+        context.close()
+    else:
+        yield None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
