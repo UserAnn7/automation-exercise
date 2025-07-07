@@ -10,3 +10,7 @@ class UserData:
     mobile_number = "+2345678990"
     email = "qwerty1234567@gmail.com"
     password = "1234"
+    country = "United States"
+    dayOfBirth = "7"
+    monthOfBirth = "12"
+    yearOfBirth = "1997"

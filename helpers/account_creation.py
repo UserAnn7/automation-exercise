@@ -36,19 +36,19 @@ class AccountCreation:
         self.account_info_page.password_input.fill(self.user.password)
 
         expect(self.account_info_page.day_select).to_be_visible()
-        self.account_info_page.day_select.select_option("7")
+        self.account_info_page.day_select.select_option(self.user.dayOfBirth)
 
         expect(self.account_info_page.month_select).to_be_visible()
-        self.account_info_page.month_select.select_option("5")
+        self.account_info_page.month_select.select_option(self.user.monthOfBirth)
 
         expect(self.account_info_page.year_select).to_be_visible()
-        self.account_info_page.year_select.select_option("1997")
+        self.account_info_page.year_select.select_option(self.user.yearOfBirth)
 
         expect(self.account_info_page.checkbox_offers).to_be_visible()
         self.account_info_page.checkbox_offers.check()
 
         expect(self.account_info_page.country_select).to_be_visible()
-        self.account_info_page.country_select.select_option("United States")
+        self.account_info_page.country_select.select_option(self.user.country)
 
         expect(self.account_info_page.input_first_name).to_be_visible()
         self.account_info_page.input_first_name.fill(self.user.first_name)
