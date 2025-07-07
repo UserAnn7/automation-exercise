@@ -7,12 +7,6 @@ from datetime import datetime
 import logging
 from playwright.sync_api import sync_playwright
 
-def pytest_runtest_setup(item):
-    # Если тест не помечен как ui — skip фикстуры browser/page
-    if "ui" not in item.keywords:
-        # Тут ничего делать не нужно — фикстуры просто не будут использованы
-        pass
-
 @pytest.fixture(scope="function")
 def browser(request):
     if "ui" in request.keywords:
@@ -26,7 +20,7 @@ def browser(request):
             yield browser
             browser.close()
     else:
-        # Для не-ui тестов — фикстура не создаётся (yield None или skip)
+        # For not-ui tests — fixtures are not created
         yield None
 
 @pytest.fixture(scope="function")
@@ -40,14 +34,14 @@ def page(browser, request):
     else:
         yield None
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
 # Create screenshots directory once per test session
 @pytest.fixture(scope="session", autouse=True)
 def create_screenshot_dir():
     os.makedirs("screenshots", exist_ok=True)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
