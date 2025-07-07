@@ -8,32 +8,32 @@ import logging
 from playwright.sync_api import sync_playwright
 
 # Uncomment these fixtures for local browser testing
-# @pytest.fixture(scope="function")
-# def browser(request):
-#     if "ui" in request.keywords:
-#         with sync_playwright() as p:
-#             browser = p.chromium.launch(headless=False,
-#                                         args=[
-#                                             "--window-position=0,0",
-#                                             "--window-size=1680,1050"
-#                                         ]
-#                                         )
-#             yield browser
-#             browser.close()
-#     else:
-#         # For not-ui tests — fixtures are not created
-#         yield None
-#
-# @pytest.fixture(scope="function")
-# def page(browser, request):
-#     if "ui" in request.keywords and browser is not None:
-#         context = browser.new_context()
-#         page = context.new_page()
-#         page.set_viewport_size({"width": 1680, "height": 1050})
-#         yield page
-#         context.close()
-#     else:
-#         yield None
+@pytest.fixture(scope="function")
+def browser(request):
+    if "ui" in request.keywords:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=False,
+                                        args=[
+                                            "--window-position=0,0",
+                                            "--window-size=1680,1050"
+                                        ]
+                                        )
+            yield browser
+            browser.close()
+    else:
+        # For not-ui tests — fixtures are not created
+        yield None
+
+@pytest.fixture(scope="function")
+def page(browser, request):
+    if "ui" in request.keywords and browser is not None:
+        context = browser.new_context()
+        page = context.new_page()
+        page.set_viewport_size({"width": 1680, "height": 1050})
+        yield page
+        context.close()
+    else:
+        yield None
 
 # Create screenshots directory once per test session
 @pytest.fixture(scope="session", autouse=True)

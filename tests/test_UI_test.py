@@ -33,7 +33,7 @@ def test_place_order_register_before_checkout(page):
         account_creation.fill_details_in_signup_and_click_signup_button()
         account_creation.filling_in_account_registration_form_and_click_create_account()
         account_creation.verify_that_account_created_and_click_continue_button()
-        account_creation.verify_loggeed_in_as_username()
+        account_creation.verify_logged_in_as_username()
         logger.info("Account is created successfully")
 
     with allure.step("Add product to cart and proceed to checkout"):

@@ -1,81 +1,91 @@
+from pages.signup_page import SignupPage
+from pages.account_info_page import AccountInfoPage
+from pages.header import Header
 from playwright.sync_api import expect
 from data.user_data import UserData
-
 
 class AccountCreation:
     def __init__(self, page):
         self.page = page
+        self.signup_page = SignupPage(page)
+        self.account_info_page = AccountInfoPage(page)
+        self.header = Header(page)
+        self.user = UserData()
 
     def click_signup_login_button(self):
-        signup_login_button = self.page.locator("a[href='/login']:has-text('Signup / Login')")
-        expect(signup_login_button).to_be_visible()
-        signup_login_button.click()
+        expect(self.signup_page.signup_login_button).to_be_visible()
+        self.signup_page.signup_login_button.click()
 
     # 5.Fill all details in Signup and create account
     def fill_details_in_signup_and_click_signup_button(self):
-        input_name = self.page.locator('input[data-qa="signup-name"]')
-        expect(input_name).to_be_visible()
-        user = UserData()
-        input_name.fill(user.first_name)
-        input_email = self.page.locator('input[data-qa="signup-email"]')
-        expect(input_email).to_be_visible()
-        input_email.fill(user.email)
-        signup_button = self.page.locator('button[data-qa="signup-button"]')
-        expect(signup_button).to_be_visible()
-        signup_button.click()
+        expect(self.signup_page.input_name).to_be_visible()
+        self.signup_page.input_name.fill(self.user.first_name)
+
+        expect(self.signup_page.input_email).to_be_visible()
+        self.signup_page.input_email.fill(self.user.email)
+
+        expect(self.signup_page.signup_button).to_be_visible()
+        self.signup_page.signup_button.click()
 
     # Filling in Enter Account Information form
     def filling_in_account_registration_form_and_click_create_account(self):
-        radio_button = self.page.locator('input#id_gender2')
-        expect(radio_button).to_be_visible()
-        radio_button.check()
+        expect(self.account_info_page.radio_gender_female).to_be_visible()
+        self.account_info_page.radio_gender_female.check()
 
-        password_input = self.page.locator('input[data-qa="password"]')
-        expect(password_input).to_be_visible()
-        user = UserData()
-        password_input.fill(user.password)
+        expect(self.account_info_page.password_input).to_be_visible()
+        self.account_info_page.password_input.fill(self.user.password)
 
-        day_select = self.page.locator('select[data-qa="days"]')
-        expect(day_select).to_be_visible()
-        day_select.select_option("7")
+        expect(self.account_info_page.day_select).to_be_visible()
+        self.account_info_page.day_select.select_option("7")
 
-        month_select = self.page.locator('select[data-qa="months"]')
-        expect(month_select).to_be_visible()
-        month_select.select_option("5")
+        expect(self.account_info_page.month_select).to_be_visible()
+        self.account_info_page.month_select.select_option("5")
 
-        year_select = self.page.locator('select[data-qa="years"]')
-        expect(year_select).to_be_visible()
-        year_select.select_option("1997")
+        expect(self.account_info_page.year_select).to_be_visible()
+        self.account_info_page.year_select.select_option("1997")
 
-        checkbox_receive_special_offers = self.page.locator('#optin')
-        expect(checkbox_receive_special_offers).to_be_visible()
-        checkbox_receive_special_offers.check()
+        expect(self.account_info_page.checkbox_offers).to_be_visible()
+        self.account_info_page.checkbox_offers.check()
 
-        country_select = self.page.locator('select[data-qa="country"]')
-        expect(country_select).to_be_visible()
-        country_select.select_option("United States")
+        expect(self.account_info_page.country_select).to_be_visible()
+        self.account_info_page.country_select.select_option("United States")
 
-        user = UserData()
+        expect(self.account_info_page.input_first_name).to_be_visible()
+        self.account_info_page.input_first_name.fill(self.user.first_name)
 
-        for selector, value in user.address_info.items():
-            locator = self.page.locator(selector)
-            expect(locator).to_be_visible()
-            locator.fill(value)
+        expect(self.account_info_page.input_last_name).to_be_visible()
+        self.account_info_page.input_last_name.fill(self.user.last_name)
 
-        create_account_button = self.page.locator('button[data-qa="create-account"]')
-        expect(create_account_button).to_be_visible()
-        create_account_button.click()
+        expect(self.account_info_page.input_company).to_be_visible()
+        self.account_info_page.input_company.fill(self.user.company)
+
+        expect(self.account_info_page.input_address).to_be_visible()
+        self.account_info_page.input_address.fill(self.user.address)
+
+        expect(self.account_info_page.input_address2).to_be_visible()
+        self.account_info_page.input_address2.fill(self.user.address2)
+
+        expect(self.account_info_page.input_state).to_be_visible()
+        self.account_info_page.input_state.fill(self.user.state)
+
+        expect(self.account_info_page.input_city).to_be_visible()
+        self.account_info_page.input_city.fill(self.user.city)
+
+        expect(self.account_info_page.input_zipcode).to_be_visible()
+        self.account_info_page.input_zipcode.fill(self.user.zipcode)
+
+        expect(self.account_info_page.input_mobile_number).to_be_visible()
+        self.account_info_page.input_mobile_number.fill(self.user.mobile_number)
+
+        expect(self.account_info_page.create_account_button).to_be_visible()
+        self.account_info_page.create_account_button.click()
+
     # 6. Verify 'ACCOUNT CREATED!' and click 'Continue' button
     def verify_that_account_created_and_click_continue_button(self):
-        success_message = self.page.locator("b", has_text="Account Created!")
-        expect(success_message).to_be_visible()
+        expect(self.account_info_page.success_message).to_be_visible()
+        self.account_info_page.continue_button.click()
 
-        continue_button = self.page.locator('a[data-qa="continue-button"]')
-        expect(continue_button).to_be_visible()
-        continue_button.click()
-
-     # 7. Verify 'Logged in as username' at top
-    def verify_loggeed_in_as_username(self):
-        user = UserData()
-        logged_in_element = self.page.locator(f"a:has-text('Logged in as {user.first_name}')")
+    # 7. Verify 'Logged in as username' at top
+    def verify_logged_in_as_username(self):
+        logged_in_element = self.header.logged_in_as(self.user.first_name)
         expect(logged_in_element).to_be_visible()
