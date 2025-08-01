@@ -1,6 +1,6 @@
 allure-results/
 allure-report/
-screenshots/
+screenshots_for_failed_cases/
 report.html
 .idea
 __pycache__
