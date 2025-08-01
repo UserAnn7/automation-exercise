@@ -4,4 +4,4 @@ screenshots_for_failed_cases/
 report.html
 .idea
 __pycache__
-logs/
+har/
