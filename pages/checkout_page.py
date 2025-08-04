@@ -1,5 +1,3 @@
-from playwright.sync_api import expect
-
 class CheckoutPage:
     def __init__(self, page, test_data):
         self.page = page
@@ -7,7 +5,7 @@ class CheckoutPage:
         self.product_in_cart = page.locator('tr#product-3')
         self.message_input = page.locator('textarea[name="message"]')
         self.place_order_button = page.locator('a.btn.btn-default.check_out[href="/payment"]')
-        self.user = test_data["user_for_UI_tests"]
+        self.user = test_data["user_data"]["user_for_UI_tests"]
 
     # Verify Address Details and Review Your Order
     def verify_address_and_product_in_chart(self):
@@ -18,7 +16,6 @@ class CheckoutPage:
         assert self.user["address"] in street1, f"Entered address '{self.user['address']}' is not in displayed: '{street1}'"
         assert self.user["address2"] in street2, f"Entered address2 '{self.user['address2']}' is not in displayed: '{street2}'"
         assert self.user["mobile_number"] in phone, f"Entered phone number '{self.user['mobile_number']}' is not in displayed: '{phone}'"
-        expect(self.product_in_cart).to_be_visible()
 
     # Enter description in comment text area and click 'Place Order'
     def enter_comment_and_place_order(self):

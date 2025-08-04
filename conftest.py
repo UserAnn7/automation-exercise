@@ -47,16 +47,6 @@ def page(har_path_provider, request):
     else:
         yield None
 
-
-# --- Фикстура для создания директории скриншотов (выполняется один раз за сессию) ---
-@fixture(scope="session", autouse=True)
-def create_screenshot_dir():
-    """
-    Создает директорию 'screenshots' один раз за тестовую сессию, если её нет.
-    """
-    os.makedirs("screenshots_for_failed_cases", exist_ok=True)
-
-
 @hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
@@ -69,7 +59,7 @@ def pytest_runtest_makereport(item, call):
         if page:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             screenshot_name = f"{item.name}_FAILED_{timestamp}.png"
-            screenshot_dir = "screenshots"
+            screenshot_dir = "screenshots_for_failed_cases"
             os.makedirs(screenshot_dir, exist_ok=True)
             screenshot_path = os.path.join(screenshot_dir, screenshot_name)
 
@@ -130,6 +120,18 @@ def embed_image_base64(image_path):
 
 @fixture(scope="session")
 def test_data():
-    data_path = os.path.join(os.path.dirname(__file__), "data", "test_data.json")
-    with open(data_path, encoding='utf-8') as f:
-        return json.load(f)
+    base_path = os.path.join(os.path.dirname(__file__), "data")
+
+    user_data_path = os.path.join(base_path, "user_data.json")
+    payment_info_path = os.path.join(base_path, "payment_info.json")
+
+    with open(user_data_path, encoding='utf-8') as f:
+        user_data = json.load(f)
+
+    with open(payment_info_path, encoding='utf-8') as f:
+        payment_info = json.load(f)
+
+    return {
+        "user_data": user_data,
+        "payment_info": payment_info
+    }

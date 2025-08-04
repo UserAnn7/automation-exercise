@@ -1,6 +1,3 @@
-from helpers.attach_screenshot import attach_screenshot
-
-
 class SignupPage:
     def __init__(self, page, test_data):
         self.page = page
@@ -21,7 +18,7 @@ class SignupPage:
         self.input_zipcode = page.locator('input[data-qa="zipcode"]')
         self.input_mobile_number = page.locator('input[data-qa="mobile_number"]')
         self.create_account_button = page.locator('button[data-qa="create-account"]')
-        self.user = test_data["user_for_UI_tests"]
+        self.user = test_data["user_data"]["user_for_UI_tests"]
 
     # Filling in Enter Account Information form
     def filling_in_account_registration_form_and_click_create_account(self):
@@ -41,5 +38,4 @@ class SignupPage:
         self.input_city.fill(self.user["city"])
         self.input_zipcode.fill(self.user["zipcode"])
         self.input_mobile_number.fill(self.user["mobile_number"])
-        attach_screenshot(self.page, name="Form filled successfully")
         self.create_account_button.click()

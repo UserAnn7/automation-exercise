@@ -3,6 +3,7 @@ from playwright.sync_api import expect
 import logging
 import pytest
 import allure
+from helpers.attach_screenshot import attach_screenshot
 from pages.account_created_page import AccountCreatedPage
 from pages.account_deleted_page import AccountDeletedPage
 from pages.cart_page import CartPage
@@ -24,10 +25,10 @@ def test_place_order_register_before_checkout(page, test_data):
     cart_page = CartPage(page)
     checkout_page = CheckoutPage(page, test_data)
     order_placed_page = OrderPlacedPage(page)
-    payment_page = PaymentPage(page)
+    payment_page = PaymentPage(page, test_data)
     header = Header(page)
     account_deleted_page = AccountDeletedPage(page)
-    user = test_data["user_for_UI_tests"]
+    user = test_data["user_data"]["user_for_UI_tests"]
 
     with allure.step("Launch browser"): #Not sure if the step is needed
         logger.info("Browser launched")
@@ -41,6 +42,7 @@ def test_place_order_register_before_checkout(page, test_data):
         expect(header.home_tab).to_be_visible()
         color = header.home_tab.evaluate("el => getComputedStyle(el).color")
         assert color == "rgb(255, 165, 0)"
+        attach_screenshot(page, name="User is on Home page")
         logger.info("Home page is visible")
 
     with allure.step("Click 'Signup / Login' button"):
@@ -54,12 +56,14 @@ def test_place_order_register_before_checkout(page, test_data):
 
     with allure.step("Verify 'ACCOUNT CREATED!' and click 'Continue' button"):
         expect(account_created_page.success_message).to_be_visible()
+        attach_screenshot(page, name="Account created")
         account_created_page.continue_button_click()
         logger.info("Account is created successfully")
 
     with allure.step("Verify ' Logged in as username' at top"):
         logged_in_element = header.logged_in_as(user["first_name"])
         expect(logged_in_element).to_be_visible()
+        attach_screenshot(page, name="Logged in as correct user")
         logger.info("' Logged in as username' is displayed at top")
 
     with allure.step("Add product to cart"):
@@ -71,7 +75,8 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("'Cart' button is clicked")
 
     with allure.step("Verify that cart page is displayed"):
-        cart_page.verify_cart_page_displayed()
+        expect(cart_page.shopping_cart_header).to_be_visible()
+        attach_screenshot(page, name="Cart page")
         logger.info("User is on Cart page")
 
     with allure.step("Click Proceed To Checkout"):
@@ -95,7 +100,8 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("'Pay and Confirm Order' button is clicked'")
 
     with allure.step("Verify success message 'Your order has been placed successfully!'"):
-        order_placed_page.verify_success_message_for_placing_order()
+        expect(order_placed_page.confirmation_text).to_be_visible()
+        attach_screenshot(page, name="Order placed successfully")
         logger.info("Order is placed successfully")
 
     with allure.step("Click 'Delete Account' button"):
@@ -103,5 +109,7 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("'Delete Account' button is clicked'")
 
     with allure.step("Verify 'ACCOUNT DELETED!' and click 'Continue' button"):
-        account_deleted_page.verify_account_deleted()
+        expect(account_deleted_page.account_deleted_title).to_be_visible()
+        attach_screenshot(page, name="Account Deleted")
+        account_deleted_page.click_continue_on_account_deleted_page()
         logger.info("Account is deleted")
