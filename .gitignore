@@ -2,3 +2,6 @@ screenshots_for_failed_cases/
 .idea
 __pycache__
 har/
+html-report/
+allure-report/
+allure-results/

@@ -1,2 +1,0 @@
-[32mINFO    [0m test_negative_search_without_product:test_negative_search_without_product.py:8 Calling API:POST:https://automationexercise.com/api/searchProduct
-[32mINFO    [0m test_negative_search_without_product:test_negative_search_without_product.py:10 Result from API:{'responseCode': 400, 'message': 'Bad request, search_product parameter is missing in POST request.'}
