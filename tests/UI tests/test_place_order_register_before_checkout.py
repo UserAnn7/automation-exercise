@@ -84,7 +84,14 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("'Proceed To Checkout' button is clicked'")
 
     with allure.step("Verify Address Details and Review Your Order"):
-        checkout_page.verify_address_and_product_in_chart()
+        [_, full_name, company, street1, street2, city_state_zip, country, phone] = checkout_page.scraped_address.all_text_contents()
+        assert user["first_name"] in full_name, f"Entered first name '{user['first_name']}' is not in displayed name: '{full_name}'"
+        assert user["last_name"] in full_name, f"Entered last name '{user['last_name']}' is not in displayed name: '{full_name}'"
+        assert user["company"] in company, f"Entered company '{user['company']}' is not in displayed: '{company}'"
+        assert user[ "address"] in street1, f"Entered address '{user['address']}' is not in displayed: '{street1}'"
+        assert user["address2"] in street2, f"Entered address2 '{user['address2']}' is not in displayed: '{street2}'"
+        assert user["mobile_number"] in phone, f"Entered phone number '{user['mobile_number']}' is not in displayed: '{phone}'"
+        attach_screenshot(page, name="Address Details and Order")
         logger.info("Address details are verified")
 
     with allure.step("Enter description in comment text area and click 'Place Order'"):
