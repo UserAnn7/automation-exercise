@@ -36,9 +36,11 @@ jobs:
 
     - name: Generate Allure Report
       run: |
-        docker run --rm -v ${{ github.workspace }}/allure-results:/allure-results \
-                   -v ${{ github.workspace }}/allure-report:/allure-report \
-                   allureframework/allure-cli:latest generate /allure-results -o /allure-report --clean
+        docker run --rm \
+          -v ${{ github.workspace }}/allure-results:/app/allure-results \
+          -v ${{ github.workspace }}/allure-report:/app/allure-report \
+          frankescobar/allure-docker-service generate \
+          /app/allure-results -o /app/allure-report --clean
     
     - name: Deploy Allure Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
