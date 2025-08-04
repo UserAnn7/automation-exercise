@@ -26,19 +26,16 @@ jobs:
         docker cp test-runner:/app/allure-report ./allure-report || echo "No Allure report"
 
     - name: Upload HTML report
-      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: html-report
         path: html-report
 
     - name: Upload Allure report
-      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: allure-report
         path: allure-report
 
     - name: Clean up Docker container
-      if: always()
       run: docker rm test-runner
