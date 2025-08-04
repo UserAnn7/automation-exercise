@@ -9,7 +9,9 @@ class HomePage:
     # Navigate to url 'http://automationexercise.com and accept cookies popup
     def navigate_to_home_page(self):
         self.page.goto("http://automationexercise.com")
-        self.consent_button.click()
+        if self.consent_button.is_visible:
+            self.consent_button.click()
+        #self.consent_button.click()
 
     # Add products to cart
     def add_product_to_cart(self):
