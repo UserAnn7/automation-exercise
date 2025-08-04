@@ -1,13 +1,14 @@
 # Use an official slim Python base image
 FROM python:3.11-slim
 
-# Install system dependencies
+# Install system dependencies (including Java for Allure)
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
     git \
     unzip \
     gnupg \
+    openjdk-17-jre \
     libnss3 \
     libatk-bridge2.0-0 \
     libxss1 \
@@ -18,6 +19,10 @@ RUN apt-get update && apt-get install -y \
     libx11-xcb1 \
     xvfb \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# (Optional) Set JAVA_HOME for Allure explicitly
+# ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+# ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # Install Allure CLI using curl
 ENV ALLURE_VERSION=2.27.0
