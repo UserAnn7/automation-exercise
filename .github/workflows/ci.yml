@@ -28,5 +28,21 @@ jobs:
     - name: Build Docker image
       run: docker build -t playwright-tests .
 
-    - name: Run tests inside Docker
-      run: docker run --rm playwright-tests
+    - name: Run tests in Docker with mounted allure-results
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}/allure-results:/app/allure-results \
+          playwright-tests
+
+    - name: Generate Allure Report
+      run: |
+        docker run --rm -v ${{ github.workspace }}/allure-results:/allure-results \
+                   -v ${{ github.workspace }}/allure-report:/allure-report \
+                   allureframework/allure-cli:latest generate /allure-results -o /allure-report --clean
+    
+    - name: Deploy Allure Report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./allure-report
+
