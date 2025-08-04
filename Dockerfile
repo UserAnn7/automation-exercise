@@ -17,29 +17,35 @@ RUN apt-get update && apt-get install -y \
     libgbm-dev \
     libx11-xcb1 \
     xvfb \
-    && apt-get clean
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Allure CLI using curl
+ENV ALLURE_VERSION=2.27.0
+RUN curl -L -o allure.tgz https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz && \
+    tar -xzf allure.tgz && \
+    mv allure-${ALLURE_VERSION} /opt/allure && \
+    ln -s /opt/allure/bin/allure /usr/bin/allure && \
+    rm allure.tgz
 
 # Install Poetry
 ENV POETRY_VERSION=1.8.2
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 
-# Create and set working directory
+# Set working directory
 WORKDIR /app
 
-# Copy the project files
+# Copy project files
 COPY . .
 
-# Configure Poetry to install dependencies in the current container environment
+# Configure Poetry and install dependencies
 RUN poetry config virtualenvs.create false
-
-# Install project dependencies
 RUN poetry install
 
 # Install Playwright browsers
 RUN python -m playwright install --with-deps
 
-# Make test runner script executable
+# Make test script executable
 RUN chmod +x run_tests.sh
 
 # Default command: run tests

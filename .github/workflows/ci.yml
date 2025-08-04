@@ -1,51 +1,44 @@
-name: Run Tests in Docker
+name: CI - Playwright Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  docker-tests:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Log in to GitHub Container Registry (optional)
-      if: false  # включи, если пушишь образ
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Build Docker image
-      run: docker build -t playwright-tests .
+      run: docker build -t automation-tests .
 
-    - name: Run tests in Docker with mounted allure-results
-      run: |
-        docker run --rm \
-          -v ${{ github.workspace }}/allure-results:/app/allure-results \
-          playwright-tests
+    - name: Run tests in Docker container
+      run: docker run --name test-runner automation-tests
 
-    - name: Generate Allure Report
+    - name: Copy test reports from container
       run: |
-        docker run --rm \
-          -v ${{ github.workspace }}/allure-results:/allure-results \
-          -v ${{ github.workspace }}/allure-report:/allure-report \
-          fescobar/allure-cli \
-          generate /allure-results -o /allure-report --clean
-    
-    
-    - name: Deploy Allure Report to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+        docker cp test-runner:/app/html-report ./html-report || echo "No HTML report"
+        docker cp test-runner:/app/allure-report ./allure-report || echo "No Allure report"
+
+    - name: Upload HTML report
+      if: always()
+      uses: actions/upload-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./allure-report
+        name: html-report
+        path: html-report
 
+    - name: Upload Allure report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-report
+        path: allure-report
+
+    - name: Clean up Docker container
+      if: always()
+      run: docker rm test-runner

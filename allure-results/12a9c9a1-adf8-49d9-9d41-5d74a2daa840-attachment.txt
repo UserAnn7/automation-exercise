@@ -1,0 +1,2 @@
+[32mINFO    [0m test_update_user_info:test_update_user_info.py:8 Calling API:PUT:https://automationexercise.com/api/updateAccount
+[32mINFO    [0m test_update_user_info:test_update_user_info.py:10 Result from API:{'responseCode': 200, 'message': 'User updated!'}

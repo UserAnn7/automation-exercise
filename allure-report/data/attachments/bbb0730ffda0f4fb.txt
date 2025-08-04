@@ -1,0 +1,18 @@
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:16 Browser launched
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:19 'http://automationexercise.com' is opened
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:27 Home page is visible
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:30 'Signup / Login' button is clicked
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:35 Details filled in Signup and create account button is clicked
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:43 Account is created successfully
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:48 ' Logged in as username' is displayed at top
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:51 Product added to cart
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:54 'Cart' button is clicked
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:58 User is on Cart page
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:61 'Proceed To Checkout' button is clicked'
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:79 Address details are verified
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:83 'Place Order' button is clicked'
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:88 Payment info is entered
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:91 'Pay and Confirm Order' button is clicked'
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:97 Order is placed successfully
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:100 'Delete Account' button is clicked'
+[32mINFO    [0m test_place_order_register_before_checkout:test_place_order_register_before_checkout.py:106 Account is deleted
