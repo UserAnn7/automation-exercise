@@ -7,7 +7,7 @@ import base64
 from datetime import datetime
 import logging
 from playwright.sync_api import sync_playwright
-import json
+from helpers.data_loader import load_test_data
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,7 +24,7 @@ def har_path_provider(request):
                 "--window-position=0,0",
                 "--window-size=1680,1050"
             ])
-            har_dir = "har"
+            har_dir = "../har"
             os.makedirs(har_dir, exist_ok=True)
             har_path = os.path.join(har_dir, f"{request.node.name}.har")
             context = browser.new_context(record_har_path=har_path)
@@ -120,18 +120,4 @@ def embed_image_base64(image_path):
 
 @fixture(scope="session")
 def test_data():
-    base_path = os.path.join(os.path.dirname(__file__), "data")
-
-    user_data_path = os.path.join(base_path, "user_data.json")
-    payment_info_path = os.path.join(base_path, "payment_info.json")
-
-    with open(user_data_path, encoding='utf-8') as f:
-        user_data = json.load(f)
-
-    with open(payment_info_path, encoding='utf-8') as f:
-        payment_info = json.load(f)
-
-    return {
-        "user_data": user_data,
-        "payment_info": payment_info
-    }
+    return load_test_data()

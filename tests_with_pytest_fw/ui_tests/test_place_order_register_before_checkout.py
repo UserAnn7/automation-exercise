@@ -18,17 +18,18 @@ logger = logging.getLogger(__name__)
 
 @pytest.mark.ui
 def test_place_order_register_before_checkout(page, test_data):
+    user = test_data["user_data"]["user_for_UI_tests"]
+    payment = test_data["payment_info"]
     home_page = HomePage(page)
-    login_page = LoginPage(page,test_data)
-    signup_page = SignupPage(page, test_data)
+    login_page = LoginPage(page,user)
+    signup_page = SignupPage(page, user)
     account_created_page = AccountCreatedPage(page)
     cart_page = CartPage(page)
-    checkout_page = CheckoutPage(page, test_data)
+    checkout_page = CheckoutPage(page, user)
     order_placed_page = OrderPlacedPage(page)
-    payment_page = PaymentPage(page, test_data)
+    payment_page = PaymentPage(page, payment)
     header = Header(page)
     account_deleted_page = AccountDeletedPage(page)
-    user = test_data["user_data"]["user_for_UI_tests"]
 
     with allure.step("Launch browser"): #Not sure if the step is needed
         logger.info("Browser launched")

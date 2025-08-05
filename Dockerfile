@@ -53,5 +53,5 @@ RUN python -m playwright install --with-deps
 # Make test script executable
 RUN chmod +x run_tests.sh
 
-# Default command: run tests
+# Default command: run tests_with_pytest_fw
 CMD ["./run_tests.sh"]

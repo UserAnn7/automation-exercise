@@ -1,5 +1,5 @@
 class SignupPage:
-    def __init__(self, page, test_data):
+    def __init__(self, page, user):
         self.page = page
         self.radio_gender_female = page.locator('#id_gender2')
         self.password_input = page.locator('input[data-qa="password"]')
@@ -18,7 +18,7 @@ class SignupPage:
         self.input_zipcode = page.locator('input[data-qa="zipcode"]')
         self.input_mobile_number = page.locator('input[data-qa="mobile_number"]')
         self.create_account_button = page.locator('button[data-qa="create-account"]')
-        self.user = test_data["user_data"]["user_for_UI_tests"]
+        self.user = user
 
     # Filling in Enter Account Information form
     def filling_in_account_registration_form_and_click_create_account(self):

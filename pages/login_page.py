@@ -1,11 +1,11 @@
 class LoginPage:
-    def __init__(self, page, test_data):
+    def __init__(self, page, user):
         self.page = page
         self.signup_login_button = page.locator("a[href='/login']")
         self.input_name = page.locator('input[data-qa="signup-name"]')
         self.input_email = page.locator('input[data-qa="signup-email"]')
         self.signup_button = page.locator('button[data-qa="signup-button"]')
-        self.user = test_data["user_data"]["user_for_UI_tests"]
+        self.user = user
 
     def click_signup_login_button(self):
         self.signup_login_button.click()

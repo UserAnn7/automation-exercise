@@ -1,5 +1,5 @@
 class PaymentPage:
-    def __init__(self, page, test_data):
+    def __init__(self, page, payment):
         self.page = page
         self.name_on_card_input = page.locator('input[data-qa="name-on-card"]')
         self.card_number_input = page.locator('input[data-qa="card-number"]')
@@ -7,7 +7,7 @@ class PaymentPage:
         self.expiry_month_input = page.locator('input[data-qa="expiry-month"]')
         self.expiry_year_input = page.locator('input[data-qa="expiry-year"]')
         self.pay_button = page.locator('button[data-qa="pay-button"]')
-        self.payment = test_data["payment_info"]
+        self.payment = payment
 
     # Enter payment details: Name on Card, Card Number, CVC, Expiration date
     def enter_payment(self):
