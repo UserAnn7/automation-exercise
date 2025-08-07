@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @pytest.mark.ui
 def test_place_order_register_before_checkout(page, test_data):
-    user = test_data["user_data"]["user_for_UI_tests"]
+    user = test_data["users"]["user1"]
     payment = test_data["payment_info"]
     home_page = HomePage(page)
     login_page = LoginPage(page,user)
@@ -62,7 +62,7 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("Account is created successfully")
 
     with allure.step("Verify ' Logged in as username' at top"):
-        logged_in_element = header.logged_in_as(user["first_name"])
+        logged_in_element = header.logged_in_as(user["firstname"])
         expect(logged_in_element).to_be_visible()
         attach_screenshot(page, name="Logged in as correct user")
         logger.info("' Logged in as username' is displayed at top")
@@ -86,10 +86,10 @@ def test_place_order_register_before_checkout(page, test_data):
 
     with allure.step("Verify Address Details and Review Your Order"):
         [_, full_name, company, street1, street2, city_state_zip, country, phone] = checkout_page.scraped_address.all_text_contents()
-        assert user["first_name"] in full_name, f"Entered first name '{user['first_name']}' is not in displayed name: '{full_name}'"
-        assert user["last_name"] in full_name, f"Entered last name '{user['last_name']}' is not in displayed name: '{full_name}'"
+        assert user["firstname"] in full_name, f"Entered first name '{user['firstname']}' is not in displayed name: '{full_name}'"
+        assert user["lastname"] in full_name, f"Entered last name '{user['lastname']}' is not in displayed name: '{full_name}'"
         assert user["company"] in company, f"Entered company '{user['company']}' is not in displayed: '{company}'"
-        assert user[ "address"] in street1, f"Entered address '{user['address']}' is not in displayed: '{street1}'"
+        assert user[ "address1"] in street1, f"Entered address1 '{user['address1']}' is not in displayed: '{street1}'"
         assert user["address2"] in street2, f"Entered address2 '{user['address2']}' is not in displayed: '{street2}'"
         assert user["mobile_number"] in phone, f"Entered phone number '{user['mobile_number']}' is not in displayed: '{phone}'"
         attach_screenshot(page, name="Address Details and Order")

@@ -1,15 +1,15 @@
 Feature: Place order as a new user
   Scenario: Successful order placement after account registration
 
-    Given the user navigates to "http://automationexercise.com"
-    And the home page is visible
+    When the user navigates to "http://automationexercise.com"
+    Then the home page is visible
 
     When the user clicks the "Signup / Login" button
     And fills in signup details and creates an account
     And verifies account creation and clicks "Continue"
-    And sees "Logged in as" at the top
+    Then sees "Logged in as" at the top
 
-    And adds a product to the cart
+    When adds a product to the cart
     And goes to the cart
     And proceeds to checkout
     And verifies address details and order summary

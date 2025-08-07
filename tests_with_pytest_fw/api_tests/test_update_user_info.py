@@ -8,7 +8,7 @@ def test_update_user_info(test_data):
     with sync_playwright() as p:
         request_context = p.request.new_context()
         url = "https://automationexercise.com/api/updateAccount"
-        response = request_context.put(url, multipart = test_data["user_data"]["user_for_API_tests"])
+        response = request_context.put(url, multipart = test_data["users"]["user2"])
 
         logger.info(f"Calling API:PUT:{url}")
         response_body = response.json()

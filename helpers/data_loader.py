@@ -14,6 +14,6 @@ def load_test_data():
         payment_info = json.load(f)
 
     return {
-        "user_data": user_data,
+        "users": user_data,
         "payment_info": payment_info
     }

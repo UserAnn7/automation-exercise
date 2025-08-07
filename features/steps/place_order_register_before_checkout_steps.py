@@ -1,5 +1,5 @@
-from behave import given, when, then
-from playwright.sync_api import sync_playwright, expect
+from behave import when, then
+from playwright.sync_api import expect
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
@@ -11,10 +11,8 @@ from pages.payment_page import PaymentPage
 from pages.header import Header
 from pages.account_deleted_page import AccountDeletedPage
 
-@given('the user navigates to "{url}"')
+@when('the user navigates to "{url}"')
 def step_impl(context, url):
-    context.playwright = sync_playwright().start()
-    context.browser = context.playwright.chromium.launch(headless=False)
     context.page = context.browser.new_page()
     context.page.goto(url)
 
@@ -29,7 +27,7 @@ def step_impl(context, url):
     context.header = Header(context.page)
     context.account_deleted_page = AccountDeletedPage(context.page)
 
-@given("the home page is visible")
+@then("the home page is visible")
 def step_impl(context):
     context.home_page.navigate_to_home_page()
     expect(context.header.home_tab).to_be_visible()
@@ -48,9 +46,9 @@ def step_impl(context):
     expect(context.account_created_page.success_message).to_be_visible()
     context.account_created_page.continue_button_click()
 
-@when('sees "Logged in as" at the top')
+@then('sees "Logged in as" at the top')
 def step_impl(context):
-    expect(context.header.logged_in_as(context.user["first_name"])).to_be_visible()
+    expect(context.header.logged_in_as(context.user["firstname"])).to_be_visible()
 
 @when("adds a product to the cart")
 def step_impl(context):
@@ -69,10 +67,10 @@ def step_impl(context):
 def step_impl(context):
     checkout = context.checkout_page.scraped_address.all_text_contents()
     user = context.user
-    assert user["first_name"] in checkout[1]
-    assert user["last_name"] in checkout[1]
+    assert user["firstname"] in checkout[1]
+    assert user["lastname"] in checkout[1]
     assert user["company"] in checkout[2]
-    assert user["address"] in checkout[3]
+    assert user["address1"] in checkout[3]
     assert user["address2"] in checkout[4]
     assert user["mobile_number"] in checkout[7]
 
@@ -100,5 +98,3 @@ def step_impl(context):
 def step_impl(context):
     expect(context.account_deleted_page.account_deleted_title).to_be_visible()
     context.account_deleted_page.click_continue_on_account_deleted_page()
-    context.browser.close()
-    context.playwright.stop()

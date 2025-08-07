@@ -12,7 +12,7 @@ class LoginPage:
 
     # Fill all details in Signup and create account
     def fill_details_in_signup_and_click_signup_button(self):
-        self.input_name.fill(self.user["first_name"])
+        self.input_name.fill(self.user["firstname"])
         self.input_email.fill(self.user["email"])
 
         self.signup_button.click()
