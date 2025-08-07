@@ -1,5 +1,8 @@
 import requests
 
+from helpers.data_loader import load_test_data
+
+
 def delete_account_function(user):
     """
         Удаляет аккаунт через API.
@@ -22,3 +25,7 @@ def delete_account_function(user):
         return response.json()  # возвращает данные в формате JSON
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
+
+
+test_data = load_test_data()
+delete_account_function(test_data["users"]["user1"])

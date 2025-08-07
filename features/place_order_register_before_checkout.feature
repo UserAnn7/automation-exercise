@@ -1,4 +1,6 @@
 Feature: Place order as a new user
+
+  @multi_user
   Scenario: Successful order placement after account registration
 
     When the user navigates to "http://automationexercise.com"

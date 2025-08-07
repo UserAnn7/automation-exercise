@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def har_path_provider(request):
     if "ui" in request.keywords:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True, args=[
+            browser = p.chromium.launch(headless=False, args=[
                 "--window-position=0,0",
                 "--window-size=1680,1050"
             ])
@@ -117,7 +117,3 @@ def embed_image_base64(image_path):
     except Exception as e:
         logger.error(f"Error encoding image to base64 from {image_path}: {e}")
         return ""
-
-@fixture(scope="session")
-def test_data():
-    return load_test_data()

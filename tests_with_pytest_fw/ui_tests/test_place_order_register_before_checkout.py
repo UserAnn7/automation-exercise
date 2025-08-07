@@ -1,9 +1,10 @@
 # Place Order: Register before Checkout
 from playwright.sync_api import expect
 import logging
-import pytest
+from pytest import mark
 import allure
 from helpers.attach_screenshot import attach_screenshot
+from helpers.data_loader import load_test_data
 from pages.account_created_page import AccountCreatedPage
 from pages.account_deleted_page import AccountDeletedPage
 from pages.cart_page import CartPage
@@ -16,9 +17,13 @@ from pages.payment_page import PaymentPage
 from pages.signup_page import SignupPage
 logger = logging.getLogger(__name__)
 
-@pytest.mark.ui
-def test_place_order_register_before_checkout(page, test_data):
-    user = test_data["users"]["user1"]
+#Importing users
+test_data = load_test_data()
+users = test_data["users"]
+
+@mark.parametrize("user", users.values())
+@mark.ui
+def test_place_order_register_before_checkout(page, user):
     payment = test_data["payment_info"]
     home_page = HomePage(page)
     login_page = LoginPage(page,user)
