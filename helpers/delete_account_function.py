@@ -1,7 +1,6 @@
 import requests
 
-from helpers.data_loader import load_test_data
-
+from helpers.data_loader import DataLoader
 
 def delete_account_function(user):
     """
@@ -27,5 +26,5 @@ def delete_account_function(user):
         return {"error": str(e)}
 
 
-test_data = load_test_data()
-delete_account_function(test_data["users"]["user1"])
+test_data = DataLoader("data/user_data.json")
+delete_account_function(test_data.data["user1"])

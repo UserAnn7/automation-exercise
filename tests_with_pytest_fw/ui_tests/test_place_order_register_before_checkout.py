@@ -4,7 +4,7 @@ import logging
 from pytest import mark
 import allure
 from helpers.attach_screenshot import attach_screenshot
-from helpers.data_loader import load_test_data
+from helpers.data_loader import DataLoader
 from pages.account_created_page import AccountCreatedPage
 from pages.account_deleted_page import AccountDeletedPage
 from pages.cart_page import CartPage
@@ -18,13 +18,13 @@ from pages.signup_page import SignupPage
 logger = logging.getLogger(__name__)
 
 #Importing users
-test_data = load_test_data()
-users = test_data["users"]
+test_data = DataLoader("data/user_data.json")
+users = test_data.data
 
 @mark.parametrize("user", users.values())
 @mark.ui
 def test_place_order_register_before_checkout(page, user):
-    payment = test_data["payment_info"]
+    payment = DataLoader("data/payment_info.json")
     home_page = HomePage(page)
     login_page = LoginPage(page,user)
     signup_page = SignupPage(page, user)
@@ -32,7 +32,7 @@ def test_place_order_register_before_checkout(page, user):
     cart_page = CartPage(page)
     checkout_page = CheckoutPage(page, user)
     order_placed_page = OrderPlacedPage(page)
-    payment_page = PaymentPage(page, payment)
+    payment_page = PaymentPage(page, payment.data)
     header = Header(page)
     account_deleted_page = AccountDeletedPage(page)
 

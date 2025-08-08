@@ -7,7 +7,6 @@ import base64
 from datetime import datetime
 import logging
 from playwright.sync_api import sync_playwright
-from helpers.data_loader import load_test_data
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,7 +23,7 @@ def har_path_provider(request):
                 "--window-position=0,0",
                 "--window-size=1680,1050"
             ])
-            har_dir = "../har"
+            har_dir = "har"
             os.makedirs(har_dir, exist_ok=True)
             har_path = os.path.join(har_dir, f"{request.node.name}.har")
             context = browser.new_context(record_har_path=har_path)

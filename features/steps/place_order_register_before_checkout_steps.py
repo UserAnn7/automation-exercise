@@ -10,11 +10,15 @@ from pages.order_placed_page import OrderPlacedPage
 from pages.payment_page import PaymentPage
 from pages.header import Header
 from pages.account_deleted_page import AccountDeletedPage
+from helpers.data_loader import DataLoader
 
 @when('the user navigates to "{url}"')
 def step_impl(context, url):
     context.page = context.browser.new_page()
     context.page.goto(url)
+
+    payment_data = DataLoader("data/payment_info.json")
+    payment_method = payment_data.data
 
     context.home_page = HomePage(context.page)
     context.login_page = LoginPage(context.page, context.user)
@@ -23,7 +27,7 @@ def step_impl(context, url):
     context.cart_page = CartPage(context.page)
     context.checkout_page = CheckoutPage(context.page, context.user)
     context.order_placed_page = OrderPlacedPage(context.page)
-    context.payment_page = PaymentPage(context.page, context.payment)
+    context.payment_page = PaymentPage(context.page, payment_method)
     context.header = Header(context.page)
     context.account_deleted_page = AccountDeletedPage(context.page)
 
