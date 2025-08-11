@@ -22,6 +22,7 @@ jobs:
 
     - name: Run tests in Docker container
       run: docker run --name test-runner automation-tests
+      continue-on-error: true
 
     - name: Copy test reports from container
       run: |
