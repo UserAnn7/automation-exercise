@@ -26,5 +26,5 @@ def delete_account_function(user):
         return {"error": str(e)}
 
 
-test_data = DataLoader("data/user_data.json")
-delete_account_function(test_data.data["user1"])
+# test_data = DataLoader("../data/user_data.json")
+# delete_account_function(test_data.data["user1"])

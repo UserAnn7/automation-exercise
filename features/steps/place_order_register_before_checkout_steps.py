@@ -18,16 +18,16 @@ def step_impl(context, url):
     context.page.goto(url)
 
     payment_data = DataLoader("data/payment_info.json")
-    payment_method = payment_data.data
+    context.payment_method = payment_data.data
 
     context.home_page = HomePage(context.page)
-    context.login_page = LoginPage(context.page, context.user)
-    context.signup_page = SignupPage(context.page, context.user)
+    context.login_page = LoginPage(context.page)
+    context.signup_page = SignupPage(context.page)
     context.account_created_page = AccountCreatedPage(context.page)
     context.cart_page = CartPage(context.page)
-    context.checkout_page = CheckoutPage(context.page, context.user)
+    context.checkout_page = CheckoutPage(context.page)
     context.order_placed_page = OrderPlacedPage(context.page)
-    context.payment_page = PaymentPage(context.page, payment_method)
+    context.payment_page = PaymentPage(context.page)
     context.header = Header(context.page)
     context.account_deleted_page = AccountDeletedPage(context.page)
 
@@ -42,8 +42,8 @@ def step_impl(context):
 
 @when("fills in signup details and creates an account")
 def step_impl(context):
-    context.login_page.fill_details_in_signup_and_click_signup_button()
-    context.signup_page.filling_in_account_registration_form_and_click_create_account()
+    context.login_page.fill_details_in_signup_and_click_signup_button(context.user["firstname"], context.user["email"])
+    context.signup_page.filling_in_account_registration_form_and_click_create_account(context.user)
 
 @when('verifies account creation and clicks "Continue"')
 def step_impl(context):
@@ -84,7 +84,7 @@ def step_impl(context):
 
 @when("enters payment information")
 def step_impl(context):
-    context.payment_page.enter_payment()
+    context.payment_page.enter_payment(context.payment_method)
 
 @when("confirms the order")
 def step_impl(context):

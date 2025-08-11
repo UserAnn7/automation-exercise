@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def har_path_provider(request):
     if "ui" in request.keywords:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=False, args=[
+            browser = p.chromium.launch(headless=True, args=[
                 "--window-position=0,0",
                 "--window-size=1680,1050"
             ])

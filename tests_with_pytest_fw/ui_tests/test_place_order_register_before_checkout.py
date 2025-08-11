@@ -26,13 +26,13 @@ users = test_data.data
 def test_place_order_register_before_checkout(page, user):
     payment = DataLoader("data/payment_info.json")
     home_page = HomePage(page)
-    login_page = LoginPage(page,user)
-    signup_page = SignupPage(page, user)
+    login_page = LoginPage(page)
+    signup_page = SignupPage(page)
     account_created_page = AccountCreatedPage(page)
     cart_page = CartPage(page)
-    checkout_page = CheckoutPage(page, user)
+    checkout_page = CheckoutPage(page)
     order_placed_page = OrderPlacedPage(page)
-    payment_page = PaymentPage(page, payment.data)
+    payment_page = PaymentPage(page)
     header = Header(page)
     account_deleted_page = AccountDeletedPage(page)
 
@@ -56,8 +56,8 @@ def test_place_order_register_before_checkout(page, user):
         logger.info("'Signup / Login' button is clicked")
 
     with allure.step("Fill all details in Signup and create account"):
-        login_page.fill_details_in_signup_and_click_signup_button()
-        signup_page.filling_in_account_registration_form_and_click_create_account()
+        login_page.fill_details_in_signup_and_click_signup_button(user["firstname"], user["email"])
+        signup_page.filling_in_account_registration_form_and_click_create_account(user)
         logger.info("Details filled in Signup and create account button is clicked")
 
     with allure.step("Verify 'ACCOUNT CREATED!' and click 'Continue' button"):
@@ -101,11 +101,11 @@ def test_place_order_register_before_checkout(page, user):
         logger.info("Address details are verified")
 
     with allure.step("Enter description in comment text area and click 'Place Order'"):
-        checkout_page.enter_comment_and_place_order()
+        checkout_page.enter_comment_and_place_order("Comment")
         logger.info("'Place Order' button is clicked'")
 
     with allure.step("Enter payment details: Name on Card, Card Number, CVC, Expiration date"):
-        payment_page.enter_payment()
+        payment_page.enter_payment(payment.data)
         logger.info("Payment info is entered")
 
     with allure.step("Click 'Pay and Confirm Order' button"):

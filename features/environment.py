@@ -1,10 +1,13 @@
+import allure
+from allure_commons.types import AttachmentType
+
 from helpers.data_loader import DataLoader
 from playwright.sync_api import sync_playwright
 
 
 def before_scenario(context, scenario):
     context.playwright = sync_playwright().start()
-    context.browser = context.playwright.chromium.launch(headless=False)
+    context.browser = context.playwright.chromium.launch(headless=True)
 
     if 'multi_user' in scenario.tags:
         user_id = context.config.userdata.get("user_id")
@@ -20,3 +23,8 @@ def before_scenario(context, scenario):
 def after_scenario(context, scenario):
     context.browser.close()
     context.playwright.stop()
+
+def after_step(context, step):
+    if step.status == "failed":
+        screenshot = context.page.screenshot()
+        allure.attach(screenshot, name="screenshot", attachment_type=AttachmentType.PNG)

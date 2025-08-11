@@ -8,10 +8,11 @@ rm -rf allure-results allure-report html-report screenshots_for_failed_cases log
 echo "Running tests with pytest..."
 poetry run pytest -s --soft-asserts \
   --html=html-report/index.html --self-contained-html \
-  --alluredir=allure-results
+  --alluredir=allure-report
 
-echo "Generating Allure report..."
-allure generate allure-results -o allure-report --clean
+#--alluredir=allure-results
+#echo "Generating Allure report..."
+#allure generate allure-results -o allure-report --clean
 
 echo "Done. Reports generated:"
 echo "- HTML Report: html-report/index.html"
