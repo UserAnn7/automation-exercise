@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check public IP and location
+      run: curl -s https://ipinfo.io
+
     - name: Checkout code
       uses: actions/checkout@v4
 
