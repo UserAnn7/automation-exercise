@@ -1,48 +1,3 @@
-#name: CI - Playwright Tests
-#
-#on:
-#  push:
-#    branches: [main]
-#  pull_request:
-#    branches: [main]
-#
-#jobs:
-#  tests:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#    - name: Check public IP and location
-#      run: curl -s https://ipinfo.io
-#
-#    - name: Checkout code
-#      uses: actions/checkout@v4
-#
-#    - name: Build Docker image
-#      run: docker build -t automation-tests .
-#
-#    - name: Run tests in Docker container
-#      run: docker run --name test-runner automation-tests
-#      continue-on-error: true
-#
-#    - name: Copy test reports from container
-#      run: |
-#        docker cp test-runner:/app/html-report ./html-report || echo "No HTML report"
-#        docker cp test-runner:/app/allure-report ./allure-report || echo "No Allure report"
-#
-#    - name: Upload HTML report
-#      uses: actions/upload-artifact@v4
-#      with:
-#        name: html-report
-#        path: html-report
-#
-#    - name: Upload Allure report
-#      uses: actions/upload-artifact@v4
-#      with:
-#        name: allure-report
-#        path: allure-report
-#
-#    - name: Clean up Docker container
-#      run: docker rm test-runner
 name: CI - Playwright Tests
 
 on:
@@ -65,10 +20,9 @@ jobs:
     - name: Build Docker image
       run: docker build -t automation-tests .
 
-    - name: Run tests and generate Allure report in Docker container
-      run: |
-        docker run --name test-runner automation-tests || true
-        docker exec test-runner npx allure generate /app/allure-results --clean -o /app/allure-report || echo "Allure generation failed"
+    - name: Run tests in Docker container
+      run: docker run --name test-runner automation-tests
+      continue-on-error: true
 
     - name: Copy test reports from container
       run: |
