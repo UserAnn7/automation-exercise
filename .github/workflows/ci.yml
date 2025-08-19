@@ -18,8 +18,8 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Docker image
-      run: docker build -t automation-tests_with_pytest_fw .
-      
+      run: docker build -t automation-tests .
+
     - name: Run tests and copy reports
       run: |
         docker run --name test-runner automation-tests || TEST_EXIT_CODE=$?
