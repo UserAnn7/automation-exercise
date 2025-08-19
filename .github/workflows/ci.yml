@@ -29,12 +29,14 @@ jobs:
         if [ ! -z "$TEST_EXIT_CODE" ]; then exit $TEST_EXIT_CODE; fi
 
     - name: Upload HTML report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: html-report
         path: html-report
 
     - name: Upload Allure report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: allure-report
