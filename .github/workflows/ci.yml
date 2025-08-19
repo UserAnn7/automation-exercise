@@ -22,9 +22,8 @@ jobs:
 
     - name: Run tests in Docker container
       run: docker run --name test-runner automation-tests
-      # если тесты упадут — джоба тоже упадёт
+      # без continue-on-error → если тесты упали, джоба будет красной
 
-    # шаги ниже выполняются всегда (даже при падении тестов)
     - name: Generate Allure report inside container
       if: always()
       run: |
