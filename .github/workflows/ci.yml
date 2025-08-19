@@ -22,24 +22,35 @@ jobs:
 
     - name: Run tests in Docker container
       run: docker run --name test-runner automation-tests
-      continue-on-error: true
+      # если тесты упадут — джоба тоже упадёт
+
+    # шаги ниже выполняются всегда (даже при падении тестов)
+    - name: Generate Allure report inside container
+      if: always()
+      run: |
+        docker start test-runner || true
+        docker exec test-runner npx allure generate /app/allure-results --clean -o /app/allure-report || echo "Allure generation failed"
 
     - name: Copy test reports from container
+      if: always()
       run: |
         docker cp test-runner:/app/html-report ./html-report || echo "No HTML report"
         docker cp test-runner:/app/allure-report ./allure-report || echo "No Allure report"
 
     - name: Upload HTML report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: html-report
         path: html-report
 
     - name: Upload Allure report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: allure-report
         path: allure-report
 
     - name: Clean up Docker container
-      run: docker rm test-runner
+      if: always()
+      run: docker rm -f test-runner || true
