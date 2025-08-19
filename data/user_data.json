@@ -1,9 +1,11 @@
 {
-  "user_for_UI_tests": {
-    "first_name": "Ann",
-    "last_name": "Skipor",
+  "user1": {
+    "name": "user1",
+    "firstname": "Ann",
+    "lastname": "Skipor",
+    "title": "Mrs",
     "company": "ITS",
-    "address": "Best street",
+    "address1": "Best street",
     "address2": "Best street2",
     "state": "NY",
     "city": "New York",
@@ -12,24 +14,24 @@
     "email": "qwerty1234567@gmail.com",
     "password": "1234",
     "country": "United States",
-    "dayOfBirth": "7",
-    "monthOfBirth": "12",
-    "yearOfBirth": "1997"
+    "birth_date": "7",
+    "birth_month": "12",
+    "birth_year": "1997"
   },
-  "user_for_API_tests": {
-    "name": "user1",
+  "user2": {
+    "name": "user2",
     "email": "dggdgdgdggd@gmail.com",
     "password": "2zdhL@6XtPMsjdv",
     "title": "Mrs",
-    "birth_date": "04",
-    "birth_month": "May",
+    "birth_date": "4",
+    "birth_month": "5",
     "birth_year": "1996",
     "firstname": "Mary",
     "lastname": "Nice",
     "company": "ITS",
     "address1": "Random street 1",
     "address2": "Second address",
-    "country": "US",
+    "country": "United States",
     "zipcode": "92208",
     "state": "California",
     "city": "Sacramento",

@@ -38,6 +38,7 @@ Run the following commands in your console to make the scripts executable:
 
 ```bash
 chmod +x run_tests.sh
+chmod +x run_behave_tests.sh
 chmod +x open_reports.sh
 chmod +x install.sh
 ```

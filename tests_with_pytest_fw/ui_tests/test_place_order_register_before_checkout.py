@@ -1,9 +1,10 @@
 # Place Order: Register before Checkout
 from playwright.sync_api import expect
 import logging
-import pytest
+from pytest import mark
 import allure
 from helpers.attach_screenshot import attach_screenshot
+from helpers.data_loader import DataLoader
 from pages.account_created_page import AccountCreatedPage
 from pages.account_deleted_page import AccountDeletedPage
 from pages.cart_page import CartPage
@@ -16,19 +17,24 @@ from pages.payment_page import PaymentPage
 from pages.signup_page import SignupPage
 logger = logging.getLogger(__name__)
 
-@pytest.mark.ui
-def test_place_order_register_before_checkout(page, test_data):
+#Importing users
+test_data = DataLoader("data/user_data.json")
+users = test_data.data
+
+@mark.parametrize("user", users.values())
+@mark.ui
+def test_place_order_register_before_checkout(page, user):
+    payment = DataLoader("data/payment_info.json")
     home_page = HomePage(page)
-    login_page = LoginPage(page,test_data)
-    signup_page = SignupPage(page, test_data)
+    login_page = LoginPage(page)
+    signup_page = SignupPage(page)
     account_created_page = AccountCreatedPage(page)
     cart_page = CartPage(page)
-    checkout_page = CheckoutPage(page, test_data)
+    checkout_page = CheckoutPage(page)
     order_placed_page = OrderPlacedPage(page)
-    payment_page = PaymentPage(page, test_data)
+    payment_page = PaymentPage(page)
     header = Header(page)
     account_deleted_page = AccountDeletedPage(page)
-    user = test_data["user_data"]["user_for_UI_tests"]
 
     with allure.step("Launch browser"): #Not sure if the step is needed
         logger.info("Browser launched")
@@ -50,8 +56,8 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("'Signup / Login' button is clicked")
 
     with allure.step("Fill all details in Signup and create account"):
-        login_page.fill_details_in_signup_and_click_signup_button()
-        signup_page.filling_in_account_registration_form_and_click_create_account()
+        login_page.fill_details_in_signup_and_click_signup_button(user["firstname"], user["email"])
+        signup_page.filling_in_account_registration_form_and_click_create_account(user)
         logger.info("Details filled in Signup and create account button is clicked")
 
     with allure.step("Verify 'ACCOUNT CREATED!' and click 'Continue' button"):
@@ -61,7 +67,7 @@ def test_place_order_register_before_checkout(page, test_data):
         logger.info("Account is created successfully")
 
     with allure.step("Verify ' Logged in as username' at top"):
-        logged_in_element = header.logged_in_as(user["first_name"])
+        logged_in_element = header.logged_in_as(user["firstname"])
         expect(logged_in_element).to_be_visible()
         attach_screenshot(page, name="Logged in as correct user")
         logger.info("' Logged in as username' is displayed at top")
@@ -85,21 +91,21 @@ def test_place_order_register_before_checkout(page, test_data):
 
     with allure.step("Verify Address Details and Review Your Order"):
         [_, full_name, company, street1, street2, city_state_zip, country, phone] = checkout_page.scraped_address.all_text_contents()
-        assert user["first_name"] in full_name, f"Entered first name '{user['first_name']}' is not in displayed name: '{full_name}'"
-        assert user["last_name"] in full_name, f"Entered last name '{user['last_name']}' is not in displayed name: '{full_name}'"
+        assert user["firstname"] in full_name, f"Entered first name '{user['firstname']}' is not in displayed name: '{full_name}'"
+        assert user["lastname"] in full_name, f"Entered last name '{user['lastname']}' is not in displayed name: '{full_name}'"
         assert user["company"] in company, f"Entered company '{user['company']}' is not in displayed: '{company}'"
-        assert user[ "address"] in street1, f"Entered address '{user['address']}' is not in displayed: '{street1}'"
+        assert user[ "address1"] in street1, f"Entered address1 '{user['address1']}' is not in displayed: '{street1}'"
         assert user["address2"] in street2, f"Entered address2 '{user['address2']}' is not in displayed: '{street2}'"
         assert user["mobile_number"] in phone, f"Entered phone number '{user['mobile_number']}' is not in displayed: '{phone}'"
         attach_screenshot(page, name="Address Details and Order")
         logger.info("Address details are verified")
 
     with allure.step("Enter description in comment text area and click 'Place Order'"):
-        checkout_page.enter_comment_and_place_order()
+        checkout_page.enter_comment_and_place_order("Comment")
         logger.info("'Place Order' button is clicked'")
 
     with allure.step("Enter payment details: Name on Card, Card Number, CVC, Expiration date"):
-        payment_page.enter_payment()
+        payment_page.enter_payment(payment.data)
         logger.info("Payment info is entered")
 
     with allure.step("Click 'Pay and Confirm Order' button"):

@@ -3,7 +3,7 @@ version: '3.8'
 services:
   automation-tests:
     build: .
-    container_name: automation-tests
+    container_name: automation-tests_with_pytest_fw
     volumes:
       - .:/app                    # Full project mounted (live code updates!)
     working_dir: /app

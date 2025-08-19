@@ -1,18 +1,38 @@
-class LoginPage:
-    def __init__(self, page, test_data):
-        self.page = page
-        self.signup_login_button = page.locator("a[href='/login']")
-        self.input_name = page.locator('input[data-qa="signup-name"]')
-        self.input_email = page.locator('input[data-qa="signup-email"]')
-        self.signup_button = page.locator('button[data-qa="signup-button"]')
-        self.user = test_data["user_data"]["user_for_UI_tests"]
+from pages.base_page import BasePage
+from playwright.sync_api import Page, Locator
 
-    def click_signup_login_button(self):
+
+class LoginPage(BasePage):
+    SIGNUP_LOGIN_BUTTON_SELECTOR = "a[href='/login']"
+    INPUT_NAME_SELECTOR = 'input[data-qa="signup-name"]'
+    INPUT_EMAIL_SELECTOR = 'input[data-qa="signup-email"]'
+    SIGNUP_BUTTON_SELECTOR = 'button[data-qa="signup-button"]'
+
+    def __init__(self, page: Page) -> None:
+        super().__init__(page)
+
+    @property
+    def signup_login_button(self) -> Locator:
+        return self.page.locator(self.SIGNUP_LOGIN_BUTTON_SELECTOR)
+
+    @property
+    def input_name(self) -> Locator:
+        return self.page.locator(self.INPUT_NAME_SELECTOR)
+
+    @property
+    def input_email(self) -> Locator:
+        return self.page.locator(self.INPUT_EMAIL_SELECTOR)
+
+    @property
+    def signup_button(self) -> Locator:
+        return self.page.locator(self.SIGNUP_BUTTON_SELECTOR)
+
+    def click_signup_login_button(self) -> None:
+        """Clicks the Signup/Login button."""
         self.signup_login_button.click()
 
-    # Fill all details in Signup and create account
-    def fill_details_in_signup_and_click_signup_button(self):
-        self.input_name.fill(self.user["first_name"])
-        self.input_email.fill(self.user["email"])
-
+    def fill_details_in_signup_and_click_signup_button(self, firstname: str, email: str) -> None:
+        """Fills signup form with provided firstname and email, then clicks Signup button."""
+        self.input_name.fill(firstname)
+        self.input_email.fill(email)
         self.signup_button.click()
