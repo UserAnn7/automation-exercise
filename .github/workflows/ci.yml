@@ -24,7 +24,7 @@ jobs:
       run: |
         docker run --name test-runner automation-tests || TEST_EXIT_CODE=$?
         docker cp test-runner:/app/html-report ./html-report || echo "No HTML report"
-        docker cp test-runner:/app/allure-report ./allure-results || echo "No Allure report"
+        docker cp test-runner:/app/allure-results ./allure-results || echo "No Allure report"
         docker rm test-runner
         if [ ! -z "$TEST_EXIT_CODE" ]; then exit $TEST_EXIT_CODE; fi
 
