@@ -3,7 +3,7 @@ from playwright.sync_api import Page, Locator
 
 
 class AccountDeletedPage(BasePage):
-    ACCOUNT_DELETED_TITLE = ("b", {"has_text": "Account Deleted!"})
+    ACCOUNT_DELETED_TITLE = ("b", {"has_text": "Account Deeted!"})
     CONTINUE_BTN = "a[data-qa='continue-button']"
 
     def __init__(self, page: Page) -> None:
