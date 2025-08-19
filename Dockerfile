@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     gnupg \
-    openjdk-17-jre \
+    default-jre \
     libnss3 \
     libatk-bridge2.0-0 \
     libxss1 \
@@ -47,8 +47,15 @@ COPY . .
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
+# Install missing system dependencies for Playwright browsers
+RUN apt-get update && apt-get install -y \
+        libnss3 libatk-bridge2.0-0 libxss1 libasound2 \
+        libxshmfence1 libgtk-3-0 libgbm-dev libx11-xcb1 \
+        fonts-liberation libappindicator3-1 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install Playwright browsers
-RUN python -m playwright install --with-deps
+RUN python -m playwright install
 
 # Make test script executable
 RUN chmod +x run_tests.sh

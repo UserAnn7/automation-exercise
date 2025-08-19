@@ -11,31 +11,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check public IP and location
+      run: curl -s https://ipinfo.io
+
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Build Docker image
       run: docker build -t automation-tests_with_pytest_fw .
-
-    - name: Run tests_with_pytest_fw in Docker container
-      run: docker run --name test-runner automation-tests_with_pytest_fw
-
-    - name: Copy test reports from container
+      
+    - name: Run tests and copy reports
       run: |
+        docker run --name test-runner automation-tests || TEST_EXIT_CODE=$?
         docker cp test-runner:/app/html-report ./html-report || echo "No HTML report"
-        docker cp test-runner:/app/allure-report ./allure-report || echo "No Allure report"
+        docker cp test-runner:/app/allure-results ./allure-results || echo "No Allure report"
+        docker rm test-runner
+        if [ ! -z "$TEST_EXIT_CODE" ]; then exit $TEST_EXIT_CODE; fi
 
     - name: Upload HTML report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: html-report
         path: html-report
 
     - name: Upload Allure report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: allure-report
-        path: allure-report
+        name: allure-results
+        path: allure-results
 
     - name: Clean up Docker container
-      run: docker rm test-runner
+      if: always()
+      run: |
+        if [ $(docker ps -a -q -f name=test-runner) ]; then
+          docker rm -f test-runner
+        else
+          echo "Container test-runner not found, skipping removal"
+        fi
