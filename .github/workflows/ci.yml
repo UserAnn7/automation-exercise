@@ -39,9 +39,14 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: allure-report
-        path: allure-report
+        name: allure-results
+        path: allure-results
 
     - name: Clean up Docker container
       if: always()
-      run: docker rm test-runner
+      run: |
+        if [ $(docker ps -a -q -f name=test-runner) ]; then
+          docker rm -f test-runner
+        else
+          echo "Container test-runner not found, skipping removal"
+        fi
