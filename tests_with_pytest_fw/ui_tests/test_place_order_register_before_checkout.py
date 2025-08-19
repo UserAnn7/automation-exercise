@@ -123,6 +123,6 @@ def test_place_order_register_before_checkout(page, user):
 
     with allure.step("Verify 'ACCOUNT DELETED!' and click 'Continue' button"):
         expect(account_deleted_page.account_deleted_title).to_be_visible()
-        attach_screenshot(page, name="Account Deleted")
+        attach_screenshot(page, name="Account Deeted")
         account_deleted_page.click_continue_on_account_deleted_page()
         logger.info("Account is deleted")
