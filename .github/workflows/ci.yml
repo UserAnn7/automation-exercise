@@ -1,5 +1,6 @@
 name: CI - Playwright Tests
 
+
 on:
   push:
     branches: [main]
