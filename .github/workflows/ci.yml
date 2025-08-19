@@ -41,4 +41,5 @@ jobs:
         path: allure-report
 
     - name: Clean up Docker container
+      if: always()
       run: docker rm test-runner
